@@ -1,0 +1,26 @@
+version: '1.0'
+
+services:
+  postgres:
+    image: postgres:latest
+    shm_size: 16g
+    container_name: pgequity
+    environment:
+      POSTGRES_USER: pgequity
+      POSTGRES_PASSWORD: pgequity
+      POSTGRES_DB: pgequity
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgequity:/var/lib/postgresql/data
+      - ./001_equity_tables.sql:/docker-entrypoint-initdb.d/001_equity_tables.sql
+      - ./500_index_symbol_load.sql:/docker-entrypoint-initdb.d/500_index_symbol_load.sql
+      - ./600_symbol_load.sql:/docker-entrypoint-initdb.d/600_symbol_load.sql
+      - ./650_etf_load.sql:/docker-entrypoint-initdb.d/650_etf_load.sql
+      - ./700_currency_symbol_load.sql:/docker-entrypoint-initdb.d/700_currency_symbol_load.sql
+      - ./800_fred_symbol_load.sql:/docker-entrypoint-initdb.d/800_fred_symbol_load.sql
+      - ./900_series_definitions.sql:/docker-entrypoint-initdb.d/900_series_definitions.sql
+
+
+volumes:
+  pgequity:
